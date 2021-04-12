@@ -14,7 +14,9 @@ const Routes = require('./Routes');
 //Servidor
 const App = express();
 const Server = require("http").createServer(App);
-var Io = require('socket.io')(Server);
+const Io = require('socket.io')(Server);
+const port = process.env.PORT || 3000;
+const host = process.env.HOST || 'localhost';
 
 //Configurações iniciais (Conectar ao BD, saudar e etc...)
 (async() => {
@@ -43,16 +45,12 @@ App.use(morgan('short'));
 //Rotas
 App.use('/webhook', Routes.webhooks);
 App.use('/api', Routes.api);
-
 App.get('/*', Routes.main);
 
+//Listenners
 App.use(Routes.listeners.notFound);
 App.use(Routes.listeners.error);
 
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || 'localhost';
-
-// Listenners
 Server.listen(port, host, ()=>{
     console.log(` - Working at: http://${host}:${port}`);
 })
