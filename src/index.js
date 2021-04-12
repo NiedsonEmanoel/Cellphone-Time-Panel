@@ -1,15 +1,20 @@
 require('dotenv').config();
+
+//Imports
 const express = require("express");
 const path = require('path');
 const cors = require("cors");
-const routes = require('./Routes');
 const morgan = require('morgan');
 
-const app = express();
-const server = require("http").createServer(app);
+//Indexadores
 const Functions = require('./Functions');
 const Databases = require('./Databases/');
-var io = require('socket.io')(server);
+const Routes = require('./Routes');
+
+//Servidor
+const App = express();
+const Server = require("http").createServer(App);
+var Io = require('socket.io')(Server);
 
 //Configurações iniciais (Conectar ao BD, saudar e etc...)
 (async() => {
@@ -19,40 +24,40 @@ var io = require('socket.io')(server);
 })();
 
 //Proteção de DDOS
-app.use(Functions.Limiter);
+App.use(Functions.Limiter);
 
 //UrlEnconded
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ extended: false, limit: '20mb' }));
+App.use(express.json({ limit: '20mb' }));
+App.use(express.urlencoded({ extended: false, limit: '20mb' }));
 
 //Cors
-app.use(cors({
+App.use(cors({
     origin: "*",
     allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
     methods: "POST, GET, PUT, DELETE",
 }));
 
 //Logs
-app.use(morgan('short'));
+App.use(morgan('short'));
 
 //Rotas
-app.use('/webhook', routes.webhooks);
-app.use('/api', routes.api);
+App.use('/webhook', Routes.webhooks);
+App.use('/api', Routes.api);
 
-app.get('/*', routes.main);
+App.get('/*', Routes.main);
 
-app.use(routes.listeners.notFound);
-app.use(routes.listeners.error);
+App.use(Routes.listeners.notFound);
+App.use(Routes.listeners.error);
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
 // Listenners
-server.listen(port, host, ()=>{
+Server.listen(port, host, ()=>{
     console.log(` - Working at: http://${host}:${port}`);
 })
 
-io.on("connection", (socket) => {
+Io.on("connection", (socket) => {
     console.log(`Connected socket ${socket.id}`);
 });
 
@@ -62,8 +67,8 @@ process.on('SIGINT', async()=>{
     console.log(' - Exiting...');
 });
 
-//Exportando o método io.emit
+//Exportando o método Io.emit
 exports.emit = function (event, data) {
-    return io.emit(event, data);
+    return Io.emit(event, data);
 };
 
