@@ -7,19 +7,19 @@ const morgan = require('morgan');
 
 const app = express();
 const server = require("http").createServer(app);
-const functions = require('./Functions');
+const Functions = require('./Functions');
 const Databases = require('./Databases/');
 var io = require('socket.io')(server);
 
 //Configurações iniciais (Conectar ao BD, saudar e etc...)
 (async() => {
     console.clear();
-    functions.InitialMessage();
+    Functions.InitialMessage();
     await Databases.MongoDB.Connect(process.env.MONGO);
 })();
 
 //Proteção de DDOS
-app.use(functions.Limiter);
+app.use(Functions.Limiter);
 
 //UrlEnconded
 app.use(express.json({ limit: '20mb' }));
