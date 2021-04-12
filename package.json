@@ -1,0 +1,39 @@
+{
+  "name": "cellphone-time-panel",
+  "version": "0.0.1",
+  "description": "Controle do tempo de uso do celular",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install && cd src/ && cd Views && react-scripts build",
+    "dev": "cd src/ && nodemon index.js",
+    "start": "cd src/ && node index",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NiedsonEmanoel/Cellphone-Time-Panel.git"
+  },
+  "keywords": [
+    "Cellphone"
+  ],
+  "author": "Niedson Emanoel <contato@niedsonemanoel.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NiedsonEmanoel/Cellphone-Time-Panel/issues"
+  },
+  "homepage": "https://github.com/NiedsonEmanoel/Cellphone-Time-Panel#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
+    "jwt": "^0.2.0",
+    "mongoose": "^5.12.3",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
