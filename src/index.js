@@ -19,10 +19,16 @@ const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
 //Configurações iniciais (Conectar ao BD, saudar e etc...)
-(async() => {
+(async () => {
     console.clear();
     Functions.InitialMessage();
-    await Databases.MongoDB.Connect(process.env.MONGO);
+    await Databases.MongoDB.Connect(process.env.MONGO, {
+        useCreateIndex: true,
+        useFindAndModify: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    });
 })();
 
 //Proteção de DDOS
@@ -51,7 +57,7 @@ App.get('/*', Routes.main);
 App.use(Routes.listeners.notFound);
 App.use(Routes.listeners.error);
 
-Server.listen(port, host, ()=>{
+Server.listen(port, host, () => {
     console.log(` - Working at: http://${host}:${port}`);
 })
 
@@ -59,7 +65,7 @@ Io.on("connection", (socket) => {
     console.log(`Connected socket ${socket.id}`);
 });
 
-process.on('SIGINT', async()=>{
+process.on('SIGINT', async () => {
     console.clear();
     await Databases.MongoDB.Disconnect();
     console.log(' - Exiting...');

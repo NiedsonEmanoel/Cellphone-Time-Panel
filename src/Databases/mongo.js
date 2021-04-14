@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
 module.exports = {
-    async Connect(link) {
+    async Connect(link, options) {
         try {
-            await mongoose.connect(link, {
-                autoReconnect: true,
-                useCreateIndex: true,
-                useFindAndModify: true,
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true
-            }, (err) => {
+            await mongoose.connect(link, options, (err) => {
                 if (err) {
                     console.log(' - Error on MongoDB');
                 } else {
@@ -18,7 +11,7 @@ module.exports = {
                 }
             });
         } catch (e) {
-            console.log(' - Error on MongoDB');
+            console.log(' - Error on MongoDB \n'+e);
         }
     },
 

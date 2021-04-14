@@ -1,4 +1,4 @@
 module.exports = {
     "MongoDB": require('./mongo'),
-    "MySQL": ""
+    "MySQL": require('./mysql'),
 }
